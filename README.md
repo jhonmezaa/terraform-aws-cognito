@@ -539,7 +539,7 @@ MIT License - see LICENSE file for details
 
 ## Author
 
-Created as part of the terraform-aws monorepo.
+Created and maintained by [Jhon Meza](https://github.com/jhonmezaa).
 
 ## References
 
