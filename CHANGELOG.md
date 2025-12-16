@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2024-12-16
+
+### Added
+
+#### Documentation
+- Added comprehensive README.md with complete module documentation
+- Usage examples for basic, production, and advanced scenarios
+- Detailed inputs and outputs tables
+- OAuth 2.0, MFA, and advanced security explanations
+- Resource servers and custom scopes documentation
+- Lambda triggers guide
+- Account recovery configuration examples
+- Naming convention documentation
+- Links to AWS documentation and Terraform registry
+
 ## [1.0.0] - 2024-12-16
 
 ### 🎉 Initial Release
@@ -306,4 +321,5 @@ None reported in this release.
 - [x] terraform.tfvars.example added to all examples
 - [x] README.md added to each example
 
+[1.0.1]: https://github.com/jhonmezaa/terraform-aws-cognito/releases/tag/v1.0.1
 [1.0.0]: https://github.com/jhonmezaa/terraform-aws-cognito/releases/tag/v1.0.0
