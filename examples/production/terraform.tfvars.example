@@ -1,0 +1,14 @@
+# =============================================================================
+# Production Cognito User Pool Example - Variables
+# =============================================================================
+# Copy this file to terraform.tfvars and customize the values
+# cp terraform.tfvars.example terraform.tfvars
+
+# Account name for resource naming
+account_name = "prod"
+
+# Project name for resource naming
+project_name = "myapp"
+
+# Environment name
+environment = "production"

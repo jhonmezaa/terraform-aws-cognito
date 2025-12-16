@@ -1,0 +1,14 @@
+# =============================================================================
+# Advanced Cognito User Pool Example - Variables
+# =============================================================================
+# Copy this file to terraform.tfvars and customize the values
+# cp terraform.tfvars.example terraform.tfvars
+
+# Account name for resource naming
+account_name = "dev"
+
+# Project name for resource naming
+project_name = "oauth-app"
+
+# Environment name
+environment = "development"
