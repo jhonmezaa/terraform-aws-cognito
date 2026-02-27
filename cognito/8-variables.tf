@@ -64,10 +64,10 @@ variable "alias_attributes" {
 variable "username_attributes" {
   description = "Whether email addresses or phone numbers can be specified as usernames when a user signs up"
   type        = list(string)
-  default     = null
+  default     = []
 
   validation {
-    condition = var.username_attributes == null || alltrue([
+    condition = alltrue([
       for attr in var.username_attributes : contains(["email", "phone_number"], attr)
     ])
     error_message = "Username attributes must be 'email' or 'phone_number'"
@@ -387,7 +387,6 @@ variable "lambda_config_pre_token_generation" {
   type        = string
   default     = null
 }
-
 variable "lambda_config_user_migration" {
   description = "ARN of the Lambda for user migration trigger"
   type        = string
@@ -657,4 +656,14 @@ variable "resource_servers" {
     })))
   }))
   default = []
+}
+
+# ==============================================================================
+# WAF ASSOCIATION
+# ==============================================================================
+
+variable "waf_web_acl_arn" {
+  description = "ARN of the WAFv2 Web ACL to associate with the Cognito User Pool"
+  type        = string
+  default     = null
 }

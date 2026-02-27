@@ -56,11 +56,6 @@ output "client_secrets" {
   sensitive   = true
 }
 
-output "client_ids_map" {
-  description = "Map of client names to their IDs"
-  value       = { for k, v in aws_cognito_user_pool_client.this : k => v.id }
-}
-
 # Domain Outputs
 output "domain" {
   description = "The domain name for the user pool"
@@ -94,11 +89,6 @@ output "domain_s3_bucket" {
 
 output "domain_version" {
   description = "The app version for the domain"
-  value       = var.domain != null ? aws_cognito_user_pool_domain.this[0].version : null
-}
-
-output "domain_app_version" {
-  description = "The app version for the domain (alias for domain_version)"
   value       = var.domain != null ? aws_cognito_user_pool_domain.this[0].version : null
 }
 
