@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-02-27
+
+### Added
+
+#### WAF Integration
+- Added `waf_web_acl_arn` variable for WAFv2 Web ACL association
+- Added `9-waf-association.tf` with `aws_wafv2_web_acl_association` resource
+- WAF association is optional (only created when `waf_web_acl_arn` is provided)
+
+### Fixed
+
+#### Variables Cleanup
+- Removed orphan SSO variables (`provider_type`, `provider_name`, `attribute_mapping`, `MetadataURL`) that were not used by any resource
+- Fixed `username_attributes` default from `null` to `[]` to prevent `length(null)` error
+- Moved `waf_web_acl_arn` variable to its own properly labeled WAF section
+
+#### Outputs Cleanup
+- Removed duplicate `client_ids_map` output (identical to `client_ids`)
+- Removed duplicate `domain_app_version` output (identical to `domain_version`)
+
+#### Data Sources Cleanup
+- Removed unused `data.aws_caller_identity.current` from `6-data.tf`
+
 ## [1.0.3] - 2024-12-16
 
 ### Changed
@@ -337,6 +360,7 @@ None reported in this release.
 - [x] terraform.tfvars.example added to all examples
 - [x] README.md added to each example
 
+[1.1.0]: https://github.com/jhonmezaa/terraform-aws-cognito/releases/tag/v1.1.0
 [1.0.3]: https://github.com/jhonmezaa/terraform-aws-cognito/releases/tag/v1.0.3
 [1.0.2]: https://github.com/jhonmezaa/terraform-aws-cognito/releases/tag/v1.0.2
 [1.0.1]: https://github.com/jhonmezaa/terraform-aws-cognito/releases/tag/v1.0.1
