@@ -44,6 +44,16 @@ output "user_pool_tier" {
   value       = aws_cognito_user_pool.this.user_pool_tier
 }
 
+output "oidc_issuer_url" {
+  description = "The OIDC issuer URL for the user pool (https://cognito-idp.{region}.amazonaws.com/{user_pool_id})"
+  value       = "https://${aws_cognito_user_pool.this.endpoint}"
+}
+
+output "jwks_uri" {
+  description = "The JWKS URI for the user pool (used to verify JWT signatures)"
+  value       = "https://${aws_cognito_user_pool.this.endpoint}/.well-known/jwks.json"
+}
+
 # App Client Outputs
 output "client_ids" {
   description = "The IDs of the user pool clients"
