@@ -269,85 +269,85 @@ module "cognito" {
 
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| terraform | >= 1.0 |
-| aws | >= 5.0 |
+| Name      | Version |
+| --------- | ------- |
+| terraform | >= 1.0  |
+| aws       | >= 5.0  |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| aws | >= 5.0 |
+| ---- | ------- |
+| aws  | >= 5.0  |
 
 ## Inputs
 
 ### Required Inputs
 
-| Name | Description | Type |
-|------|-------------|------|
-| account_name | Account name for resource naming (e.g., 'prod', 'dev') | `string` |
+| Name         | Description                                             | Type     |
+| ------------ | ------------------------------------------------------- | -------- |
+| account_name | Account name for resource naming (e.g., 'prod', 'dev')  | `string` |
 | project_name | Project name for resource naming (e.g., 'myapp', 'api') | `string` |
 
 ### Optional Inputs
 
-| Name | Description | Type | Default |
-|------|-------------|------|---------|
-| region_prefix | Override the region prefix (defaults to automatic mapping) | `string` | `null` |
-| environment | Environment name (e.g., 'production', 'development') | `string` | `"development"` |
-| user_pool_tier | User pool tier: LITE, ESSENTIALS, or PLUS | `string` | `"ESSENTIALS"` |
-| deletion_protection | Deletion protection: ACTIVE or INACTIVE | `string` | `"INACTIVE"` |
-| username_attributes | User sign-in attributes (email, phone_number) | `list(string)` | `["email"]` |
-| auto_verified_attributes | Attributes to be auto-verified (email, phone_number) | `list(string)` | `["email"]` |
-| alias_attributes | Attributes supported as aliases (email, phone_number, preferred_username) | `list(string)` | `[]` |
-| mfa_configuration | MFA configuration: OFF, ON, or OPTIONAL | `string` | `"OPTIONAL"` |
-| enable_sms_mfa | Enable SMS-based MFA | `bool` | `false` |
-| enable_software_token_mfa | Enable software token MFA (TOTP) | `bool` | `true` |
-| password_minimum_length | Minimum length of the password (6-99) | `number` | `8` |
-| password_require_lowercase | Require lowercase letters in password | `bool` | `true` |
-| password_require_uppercase | Require uppercase letters in password | `bool` | `true` |
-| password_require_numbers | Require numbers in password | `bool` | `true` |
-| password_require_symbols | Require symbols in password | `bool` | `false` |
-| temporary_password_validity_days | Days that a temporary password is valid (1-365) | `number` | `7` |
-| enable_advanced_security | Enable advanced security features | `bool` | `false` |
-| advanced_security_mode | Advanced security mode: OFF, AUDIT, or ENFORCED | `string` | `"OFF"` |
-| app_clients | List of app clients to create | `list(object)` | `[]` |
-| domain | Domain prefix for the user pool (for hosted UI) | `string` | `null` |
-| custom_domain | Custom domain for the user pool | `string` | `null` |
-| custom_domain_certificate_arn | ACM certificate ARN for custom domain | `string` | `null` |
-| ui_customization_css | CSS for UI customization | `string` | `null` |
-| ui_customization_image_file | Path to logo file for UI customization | `string` | `null` |
-| resource_servers | List of resource servers with custom OAuth scopes | `list(object)` | `[]` |
-| identity_providers | List of identity providers (Google, Facebook, etc.) | `list(object)` | `[]` |
-| user_groups | List of user groups | `list(object)` | `[]` |
-| schemas | List of custom schema attributes | `list(object)` | `[]` |
-| ignore_schema_changes | Ignore changes to schema after creation | `bool` | `false` |
-| email_sending_account | Email sending account: COGNITO_DEFAULT or DEVELOPER | `string` | `"COGNITO_DEFAULT"` |
-| email_source_arn | ARN of SES verified email identity | `string` | `null` |
-| email_from_address | From email address | `string` | `null` |
-| email_reply_to_address | Reply-to email address | `string` | `null` |
-| sms_external_id | External ID for SNS role | `string` | `null` |
-| sms_sns_caller_arn | ARN of SNS caller role | `string` | `null` |
-| sms_authentication_message | SMS authentication message | `string` | `null` |
-| email_verification_subject | Email verification subject | `string` | `null` |
-| email_verification_message | Email verification message | `string` | `null` |
-| sms_verification_message | SMS verification message | `string` | `null` |
-| device_only_remembered_on_user_prompt | Whether to remember devices only on user prompt | `bool` | `false` |
-| challenge_required_on_new_device | Whether to challenge on new device | `bool` | `false` |
-| enable_username_case_sensitivity | Enable username case sensitivity | `bool` | `false` |
-| account_recovery_mechanisms | Account recovery mechanisms | `list(object)` | See defaults |
-| lambda_create_auth_challenge | ARN of Create Auth Challenge Lambda | `string` | `null` |
-| lambda_custom_message | ARN of Custom Message Lambda | `string` | `null` |
-| lambda_define_auth_challenge | ARN of Define Auth Challenge Lambda | `string` | `null` |
-| lambda_post_authentication | ARN of Post Authentication Lambda | `string` | `null` |
-| lambda_post_confirmation | ARN of Post Confirmation Lambda | `string` | `null` |
-| lambda_pre_authentication | ARN of Pre Authentication Lambda | `string` | `null` |
-| lambda_pre_sign_up | ARN of Pre Sign Up Lambda | `string` | `null` |
-| lambda_pre_token_generation | ARN of Pre Token Generation Lambda | `string` | `null` |
-| lambda_user_migration | ARN of User Migration Lambda | `string` | `null` |
-| lambda_verify_auth_challenge_response | ARN of Verify Auth Challenge Response Lambda | `string` | `null` |
-| lambda_kms_key_id | KMS key ID for Lambda config encryption | `string` | `null` |
-| tags | Additional tags for resources | `map(string)` | `{}` |
+| Name                                  | Description                                                               | Type           | Default             |
+| ------------------------------------- | ------------------------------------------------------------------------- | -------------- | ------------------- |
+| region_prefix                         | Override the region prefix (defaults to automatic mapping)                | `string`       | `null`              |
+| environment                           | Environment name (e.g., 'production', 'development')                      | `string`       | `"development"`     |
+| user_pool_tier                        | User pool tier: LITE, ESSENTIALS, or PLUS                                 | `string`       | `"ESSENTIALS"`      |
+| deletion_protection                   | Deletion protection: ACTIVE or INACTIVE                                   | `string`       | `"INACTIVE"`        |
+| username_attributes                   | User sign-in attributes (email, phone_number)                             | `list(string)` | `["email"]`         |
+| auto_verified_attributes              | Attributes to be auto-verified (email, phone_number)                      | `list(string)` | `["email"]`         |
+| alias_attributes                      | Attributes supported as aliases (email, phone_number, preferred_username) | `list(string)` | `[]`                |
+| mfa_configuration                     | MFA configuration: OFF, ON, or OPTIONAL                                   | `string`       | `"OPTIONAL"`        |
+| enable_sms_mfa                        | Enable SMS-based MFA                                                      | `bool`         | `false`             |
+| enable_software_token_mfa             | Enable software token MFA (TOTP)                                          | `bool`         | `true`              |
+| password_minimum_length               | Minimum length of the password (6-99)                                     | `number`       | `8`                 |
+| password_require_lowercase            | Require lowercase letters in password                                     | `bool`         | `true`              |
+| password_require_uppercase            | Require uppercase letters in password                                     | `bool`         | `true`              |
+| password_require_numbers              | Require numbers in password                                               | `bool`         | `true`              |
+| password_require_symbols              | Require symbols in password                                               | `bool`         | `false`             |
+| temporary_password_validity_days      | Days that a temporary password is valid (1-365)                           | `number`       | `7`                 |
+| enable_advanced_security              | Enable advanced security features                                         | `bool`         | `false`             |
+| advanced_security_mode                | Advanced security mode: OFF, AUDIT, or ENFORCED                           | `string`       | `"OFF"`             |
+| app_clients                           | List of app clients to create                                             | `list(object)` | `[]`                |
+| domain                                | Domain prefix for the user pool (for hosted UI)                           | `string`       | `null`              |
+| custom_domain                         | Custom domain for the user pool                                           | `string`       | `null`              |
+| custom_domain_certificate_arn         | ACM certificate ARN for custom domain                                     | `string`       | `null`              |
+| ui_customization_css                  | CSS for UI customization                                                  | `string`       | `null`              |
+| ui_customization_image_file           | Path to logo file for UI customization                                    | `string`       | `null`              |
+| resource_servers                      | List of resource servers with custom OAuth scopes                         | `list(object)` | `[]`                |
+| identity_providers                    | List of identity providers (Google, Facebook, etc.)                       | `list(object)` | `[]`                |
+| user_groups                           | List of user groups                                                       | `list(object)` | `[]`                |
+| schemas                               | List of custom schema attributes                                          | `list(object)` | `[]`                |
+| ignore_schema_changes                 | Ignore changes to schema after creation                                   | `bool`         | `false`             |
+| email_sending_account                 | Email sending account: COGNITO_DEFAULT or DEVELOPER                       | `string`       | `"COGNITO_DEFAULT"` |
+| email_source_arn                      | ARN of SES verified email identity                                        | `string`       | `null`              |
+| email_from_address                    | From email address                                                        | `string`       | `null`              |
+| email_reply_to_address                | Reply-to email address                                                    | `string`       | `null`              |
+| sms_external_id                       | External ID for SNS role                                                  | `string`       | `null`              |
+| sms_sns_caller_arn                    | ARN of SNS caller role                                                    | `string`       | `null`              |
+| sms_authentication_message            | SMS authentication message                                                | `string`       | `null`              |
+| email_verification_subject            | Email verification subject                                                | `string`       | `null`              |
+| email_verification_message            | Email verification message                                                | `string`       | `null`              |
+| sms_verification_message              | SMS verification message                                                  | `string`       | `null`              |
+| device_only_remembered_on_user_prompt | Whether to remember devices only on user prompt                           | `bool`         | `false`             |
+| challenge_required_on_new_device      | Whether to challenge on new device                                        | `bool`         | `false`             |
+| enable_username_case_sensitivity      | Enable username case sensitivity                                          | `bool`         | `false`             |
+| account_recovery_mechanisms           | Account recovery mechanisms                                               | `list(object)` | See defaults        |
+| lambda_create_auth_challenge          | ARN of Create Auth Challenge Lambda                                       | `string`       | `null`              |
+| lambda_custom_message                 | ARN of Custom Message Lambda                                              | `string`       | `null`              |
+| lambda_define_auth_challenge          | ARN of Define Auth Challenge Lambda                                       | `string`       | `null`              |
+| lambda_post_authentication            | ARN of Post Authentication Lambda                                         | `string`       | `null`              |
+| lambda_post_confirmation              | ARN of Post Confirmation Lambda                                           | `string`       | `null`              |
+| lambda_pre_authentication             | ARN of Pre Authentication Lambda                                          | `string`       | `null`              |
+| lambda_pre_sign_up                    | ARN of Pre Sign Up Lambda                                                 | `string`       | `null`              |
+| lambda_pre_token_generation           | ARN of Pre Token Generation Lambda                                        | `string`       | `null`              |
+| lambda_user_migration                 | ARN of User Migration Lambda                                              | `string`       | `null`              |
+| lambda_verify_auth_challenge_response | ARN of Verify Auth Challenge Response Lambda                              | `string`       | `null`              |
+| lambda_kms_key_id                     | KMS key ID for Lambda config encryption                                   | `string`       | `null`              |
+| tags                                  | Additional tags for resources                                             | `map(string)`  | `{}`                |
 
 ### App Client Object Structure
 
@@ -379,28 +379,28 @@ module "cognito" {
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| id | The ID of the user pool |
-| arn | The ARN of the user pool |
-| name | The name of the user pool |
-| endpoint | The endpoint of the user pool |
-| creation_date | The date the user pool was created |
-| last_modified_date | The date the user pool was last modified |
-| tier | The tier of the user pool |
-| client_ids | Map of app client names to their IDs |
-| client_secrets | Map of app client names to their secrets (sensitive) |
-| domain | The domain prefix for the user pool |
-| domain_cloudfront_distribution | CloudFront distribution ARN for standard domain |
-| custom_domain | The custom domain for the user pool |
-| custom_domain_cloudfront_distribution | CloudFront distribution ARN for custom domain |
-| resource_server_ids | Map of resource server identifiers to IDs |
-| resource_server_identifiers | List of resource server identifiers |
-| resource_server_scope_identifiers | Map of resource server identifiers to their scope identifiers |
-| identity_provider_names | List of identity provider names |
-| user_group_names | List of user group names |
-| user_group_arns | Map of user group names to their ARNs |
-| estimated_number_of_users | Estimated number of users in the pool |
+| Name                                  | Description                                                   |
+| ------------------------------------- | ------------------------------------------------------------- |
+| id                                    | The ID of the user pool                                       |
+| arn                                   | The ARN of the user pool                                      |
+| name                                  | The name of the user pool                                     |
+| endpoint                              | The endpoint of the user pool                                 |
+| creation_date                         | The date the user pool was created                            |
+| last_modified_date                    | The date the user pool was last modified                      |
+| tier                                  | The tier of the user pool                                     |
+| client_ids                            | Map of app client names to their IDs                          |
+| client_secrets                        | Map of app client names to their secrets (sensitive)          |
+| domain                                | The domain prefix for the user pool                           |
+| domain_cloudfront_distribution        | CloudFront distribution ARN for standard domain               |
+| custom_domain                         | The custom domain for the user pool                           |
+| custom_domain_cloudfront_distribution | CloudFront distribution ARN for custom domain                 |
+| resource_server_ids                   | Map of resource server identifiers to IDs                     |
+| resource_server_identifiers           | List of resource server identifiers                           |
+| resource_server_scope_identifiers     | Map of resource server identifiers to their scope identifiers |
+| identity_provider_names               | List of identity provider names                               |
+| user_group_names                      | List of user group names                                      |
+| user_group_arns                       | Map of user group names to their ARNs                         |
+| estimated_number_of_users             | Estimated number of users in the pool                         |
 
 ## Examples
 
@@ -421,18 +421,21 @@ AWS Cognito offers three tiers with different feature sets:
 ## Advanced Security
 
 When enabled, advanced security provides:
+
 - Risk-based adaptive authentication
 - Compromised credential checking
 - Anomaly detection
 - IP-based rate limiting
 
 Modes:
+
 - **AUDIT**: Logs security events without blocking
 - **ENFORCED**: Actively blocks suspicious authentication attempts
 
 ## OAuth Flows
 
 The module supports OAuth 2.0 flows:
+
 - **Authorization Code**: Server-side applications (most secure)
 - **Implicit**: Single-page applications (client-side)
 
@@ -441,6 +444,7 @@ Configure via `allowed_oauth_flows` in app client configuration.
 ## Identity Providers
 
 Supported identity providers:
+
 - **Social**: Google, Facebook, Amazon, Apple
 - **SAML**: Enterprise SAML 2.0 providers
 - **OIDC**: OpenID Connect providers
@@ -530,6 +534,7 @@ All resources follow the monorepo naming convention:
 ```
 
 Examples:
+
 - `ause1-cognito-prod-myapp` (us-east-1, prod, myapp)
 - `euw1-cognito-dev-api` (eu-west-1, dev, api)
 

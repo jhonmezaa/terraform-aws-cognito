@@ -3,14 +3,14 @@
 ## [v1.3.1] - 2026-02-27
 
 ### Changed
-- Standardize Terraform `required_version` to `~> 1.0` across module and examples
 
+- Standardize Terraform `required_version` to `~> 1.0` across module and examples
 
 ## [v1.3.0] - 2026-02-27
 
 ### Changed
-- Update AWS provider constraint to `~> 6.0` across module and examples
 
+- Update AWS provider constraint to `~> 6.0` across module and examples
 
 All notable changes to this project will be documented in this file.
 
@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 #### OIDC/JWT Outputs
+
 - Added `oidc_issuer_url` output (`https://cognito-idp.{region}.amazonaws.com/{user_pool_id}`)
 - Added `jwks_uri` output (`https://.../.well-known/jwks.json`) for JWT signature verification
 - Critical for integration with API Gateway, ALB, EKS IRSA, and any JWT-validating service
@@ -31,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 #### WAF Integration
+
 - Added `waf_web_acl_arn` variable for WAFv2 Web ACL association
 - Added `9-waf-association.tf` with `aws_wafv2_web_acl_association` resource
 - WAF association is optional (only created when `waf_web_acl_arn` is provided)
@@ -38,15 +40,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 #### Variables Cleanup
+
 - Removed orphan SSO variables (`provider_type`, `provider_name`, `attribute_mapping`, `MetadataURL`) that were not used by any resource
 - Fixed `username_attributes` default from `null` to `[]` to prevent `length(null)` error
 - Moved `waf_web_acl_arn` variable to its own properly labeled WAF section
 
 #### Outputs Cleanup
+
 - Removed duplicate `client_ids_map` output (identical to `client_ids`)
 - Removed duplicate `domain_app_version` output (identical to `domain_version`)
 
 #### Data Sources Cleanup
+
 - Removed unused `data.aws_caller_identity.current` from `6-data.tf`
 
 ## [1.0.3] - 2024-12-16
@@ -54,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 #### Repository
+
 - Updated .gitignore to ignore .terraform.lock.hcl files
 - Removed existing lock files from repository (4 files)
 - Lock files should not be committed for reusable modules to avoid version conflicts
@@ -63,6 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 #### Documentation
+
 - Updated author information in README.md with proper attribution
 
 ## [1.0.1] - 2024-12-16
@@ -70,6 +77,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 #### Documentation
+
 - Added comprehensive README.md with complete module documentation
 - Usage examples for basic, production, and advanced scenarios
 - Detailed inputs and outputs tables
@@ -89,6 +97,7 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 ### Added
 
 #### Core User Pool Features
+
 - User Pool creation with customizable configuration
 - Support for LITE, ESSENTIALS, and PLUS tiers
 - Username and email authentication
@@ -100,6 +109,7 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 - Consistent resource naming convention across all resources
 
 #### Password Policy
+
 - Configurable minimum password length (6-99 characters)
 - Require lowercase letters
 - Require uppercase letters
@@ -108,12 +118,14 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 - Temporary password validity (1-365 days)
 
 #### Multi-Factor Authentication (MFA)
+
 - MFA configuration modes: OFF, ON, OPTIONAL
 - SMS-based MFA support
 - Software token MFA (TOTP) support
 - MFA configuration per user choice
 
 #### Advanced Security
+
 - Risk-based adaptive authentication (requires PLUS tier)
 - Advanced security modes: OFF, AUDIT, ENFORCED
 - Compromised credential checking
@@ -122,6 +134,7 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 - CAPTCHA challenges for suspicious requests
 
 #### App Clients
+
 - Multiple app clients support via for_each pattern
 - Client secret generation
 - Token validity configuration (access, ID, refresh tokens)
@@ -141,6 +154,7 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 - Auth session validity
 
 #### OAuth 2.0 Support
+
 - Callback URLs configuration
 - Logout URLs configuration
 - Default redirect URI
@@ -150,6 +164,7 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 - Supported identity providers integration
 
 #### Domain and Hosted UI
+
 - Standard Cognito domain support
 - Custom domain with ACM certificate
 - UI customization with CSS
@@ -157,18 +172,21 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 - UI customization per client or globally
 
 #### User Groups
+
 - Multiple user groups via for_each pattern
 - Group descriptions
 - Precedence configuration (1-1000)
 - IAM role assignment per group
 
 #### Resource Servers
+
 - Custom OAuth scopes for APIs
 - Multiple resource servers support
 - Scope name and description
 - Automatic scope identifier generation
 
 #### Identity Providers
+
 - Social login support (Google, Facebook, Amazon, Apple)
 - SAML 2.0 provider integration
 - OpenID Connect (OIDC) provider support
@@ -176,6 +194,7 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 - Provider details configuration
 
 #### Custom Schemas
+
 - String attributes with min/max length
 - Number attributes with min/max value
 - DateTime attributes
@@ -185,6 +204,7 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 - Developer-only attributes
 
 #### Lambda Triggers
+
 - Pre sign-up trigger
 - Post confirmation trigger
 - Pre authentication trigger
@@ -201,6 +221,7 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 - KMS key configuration for custom senders
 
 #### Email Configuration
+
 - Cognito default email (50 emails/day limit)
 - Amazon SES integration (DEVELOPER mode)
 - Custom source ARN
@@ -209,6 +230,7 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 - SES configuration set support
 
 #### SMS Configuration
+
 - SMS authentication messages
 - SMS verification messages
 - SNS caller ARN configuration
@@ -216,6 +238,7 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 - SMS region configuration
 
 #### Verification Messages
+
 - Custom email verification templates
 - Custom SMS verification templates
 - Email verification subject
@@ -225,6 +248,7 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 - Default email option (CONFIRM_WITH_CODE, CONFIRM_WITH_LINK)
 
 #### Account Recovery
+
 - Multiple recovery mechanisms
 - Verified email recovery
 - Verified phone number recovery
@@ -232,6 +256,7 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 - Priority-based recovery order
 
 #### Admin Create User
+
 - Allow admin create user only mode
 - Invite message templates
 - Custom email message
@@ -239,10 +264,12 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 - Custom SMS message
 
 #### Device Configuration
+
 - Challenge required on new device
 - Device only remembered on user prompt
 
 #### Outputs (30 total)
+
 - User pool outputs (ID, ARN, name, endpoint, tier)
 - Creation and modification dates
 - Estimated number of users
@@ -256,11 +283,13 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 - Resource server outputs (IDs, identifiers, scope identifiers)
 
 #### Examples
+
 - **basic**: Simple user pool with email authentication (~$0.01/month)
 - **production**: Production-ready with MFA and advanced security (~$0.05/month)
 - **advanced**: Complete OAuth 2.0 with resource servers and custom scopes (~$0.05/month)
 
 #### Documentation
+
 - Comprehensive README with usage examples
 - Feature comparison with reference module
 - Complete variable documentation
@@ -271,6 +300,7 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 - Cost optimization tips
 
 #### Code Quality
+
 - Terraform 1.0+ compatibility
 - AWS Provider 5.0+ compatibility
 - Numbered file organization (0-8)
@@ -283,14 +313,17 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 ### Fixed
 
 #### Data Source Attributes
+
 - Fixed `data.aws_region.current.name` to use `.id` attribute
 - Resolved deprecated attribute warnings
 
 #### Mutually Exclusive Arguments
+
 - Fixed `alias_attributes` and `username_attributes` conflict
 - Implemented conditional logic to prevent conflicts
 
 #### Token Validity Units
+
 - Fixed token validity units always explicitly set
 - Prevented hour/minute/day confusion
 - Access token: minutes (default)
@@ -298,24 +331,29 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 - Refresh token: days (default)
 
 #### Resource Dependencies
+
 - Added explicit `depends_on` for resource servers before app clients
 - Ensures custom OAuth scopes are available when creating clients
 
 #### Reserved Words
+
 - Domain validation prevents AWS reserved word "cognito"
 
 #### App Client Configuration
+
 - Removed unsupported `client_type` attribute
 - Removed conditional lifecycle ignore_changes (not supported by Terraform)
 
 ### Technical Details
 
 #### Supported Regions
+
 - All AWS commercial regions
 - Automatic region prefix mapping for 20+ regions
 - Custom region prefix override support
 
 #### Resource Limits
+
 - Up to 1000 app clients per user pool
 - Up to 50 user groups per user pool
 - Up to 25 resource servers per user pool
@@ -323,12 +361,14 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 - AWS service quotas apply
 
 #### Performance
+
 - Efficient use of for_each over count
 - Minimal resource dependencies
 - Optimized data source queries
 - Lazy evaluation of optional resources
 
 #### Compatibility
+
 - Terraform >= 1.0
 - AWS Provider >= 5.0
 - Compatible with Terraform Cloud
@@ -338,9 +378,11 @@ First production-ready release of the AWS Cognito User Pool Terraform module wit
 ### Dependencies
 
 #### Required Providers
+
 - hashicorp/aws >= 5.0
 
 #### Terraform Version
+
 - terraform >= 1.0
 
 ### Notes
