@@ -74,11 +74,11 @@ resource "aws_cognito_user_pool" "this" {
     allow_admin_create_user_only = var.admin_create_user_config_allow_admin_create_user_only
 
     dynamic "invite_message_template" {
-      for_each = var.admin_create_user_config_email_message != null ? [1] : []
+      for_each = var.admin_create_user_config_email_message != null || var.admin_create_user_config_sms_message != null ? [1] : []
       content {
         email_message = var.admin_create_user_config_email_message
         email_subject = var.admin_create_user_config_email_subject
-        sms_message   = var.admin_create_user_config_sms_message
+        sms_message   = coalesce(var.admin_create_user_config_sms_message, "Your username is {username} and temporary password is {####}")
       }
     }
   }

@@ -8,10 +8,10 @@ resource "aws_cognito_user_pool_client" "this" {
   # Client Secret
   generate_secret = lookup(each.value, "generate_secret", false)
 
-  # Refresh Token Validity
-  refresh_token_validity = lookup(each.value, "refresh_token_validity", 30)
-  access_token_validity  = lookup(each.value, "access_token_validity", 60)
-  id_token_validity      = lookup(each.value, "id_token_validity", 60)
+  # Token Validity
+  refresh_token_validity = lookup(each.value, "refresh_token_validity", null) != null ? each.value.refresh_token_validity : 30
+  access_token_validity  = lookup(each.value, "access_token_validity", null) != null ? each.value.access_token_validity : 60
+  id_token_validity      = lookup(each.value, "id_token_validity", null) != null ? each.value.id_token_validity : 60
 
   # Token Validity Units (always set to prevent confusion)
   token_validity_units {
