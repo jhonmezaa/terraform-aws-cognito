@@ -582,6 +582,12 @@ variable "domain_certificate_arn" {
   default     = null
 }
 
+variable "managed_login_version" {
+  description = "Managed login version for the domain (1 = classic Hosted UI, 2 = Managed Login). Required for ESSENTIALS/PLUS tiers with PASSWORD auth factor."
+  type        = number
+  default     = null
+}
+
 variable "custom_domain" {
   description = "Custom domain name for hosted UI"
   type        = string

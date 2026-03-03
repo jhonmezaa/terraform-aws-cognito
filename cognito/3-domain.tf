@@ -2,9 +2,10 @@
 resource "aws_cognito_user_pool_domain" "this" {
   count = var.domain != null ? 1 : 0
 
-  domain          = var.domain
-  certificate_arn = var.domain_certificate_arn
-  user_pool_id    = aws_cognito_user_pool.this.id
+  domain                = var.domain
+  certificate_arn       = var.domain_certificate_arn
+  managed_login_version = var.managed_login_version
+  user_pool_id          = aws_cognito_user_pool.this.id
 }
 
 # Custom Domain (if certificate provided)
