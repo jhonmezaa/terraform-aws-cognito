@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [v1.3.6] - 2026-10-27
+
+### Fixed
+
+- Replace deprecated `data.aws_region.current.id` with `data.aws_region.current.region` (AWS provider v6) in the module and examples
+- `examples/production`: output referenced non-existent `module.cognito.client_ids_map`; renamed to `client_ids` using `module.cognito.client_ids`
+- `examples/advanced` README: API Gateway authorizer snippet referenced non-existent `module.cognito.user_pool_arn`; use `module.cognito.arn`
+
 ## [v1.3.5] - 2026-10-27
 
 ### Changed
