@@ -55,8 +55,7 @@ After deployment:
 # Get outputs
 export USER_POOL_ID=$(terraform output -raw user_pool_id)
 export CLIENT_ID=$(terraform output -json client_ids | jq -r '.["web-app"]')
-export DOMAIN=$(terraform output -raw domain)
-export REGION=$(terraform output -raw region)
+export AUTHORIZE_URL=$(terraform output -raw oauth_authorize_url)
 
 # Create a test user
 aws cognito-idp admin-create-user \
@@ -74,7 +73,7 @@ aws cognito-idp admin-set-user-password \
   --permanent
 
 # Test OAuth authorization URL (open in browser)
-echo "https://${DOMAIN}.auth.${REGION}.amazoncognito.com/oauth2/authorize?client_id=${CLIENT_ID}&response_type=code&scope=email+openid+profile+api/read&redirect_uri=https://example.com/callback"
+echo "${AUTHORIZE_URL}?client_id=${CLIENT_ID}&response_type=code&scope=email+openid+profile+api/read&redirect_uri=https://example.com/callback"
 ```
 
 ## Outputs
@@ -83,7 +82,7 @@ echo "https://${DOMAIN}.auth.${REGION}.amazoncognito.com/oauth2/authorize?client
 - `user_pool_arn` - ARN of the User Pool
 - `client_ids` - Map of app client IDs
 - `client_secrets` - Map of app client secrets (sensitive)
-- `resource_server_ids` - Map of resource server IDs
+- `resource_server_identifiers` - List of resource server identifiers
 - `resource_server_scope_identifiers` - Available custom scopes
 - `hosted_ui_url` - Hosted UI URL
 - `oauth_authorize_url` - OAuth authorization endpoint

@@ -82,6 +82,7 @@ aws cognito-idp admin-initiate-auth \
 - `user_pool_id` - ID of the Cognito User Pool
 - `user_pool_arn` - ARN of the User Pool
 - `client_ids` - Map of app client IDs
+- `domain` - Domain prefix of the User Pool
 - `hosted_ui_url` - Hosted UI URL for testing
 
 ## What's Configured
