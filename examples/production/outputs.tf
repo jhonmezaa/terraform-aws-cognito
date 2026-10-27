@@ -8,9 +8,9 @@ output "user_pool_arn" {
   value       = module.cognito.arn
 }
 
-output "client_ids_map" {
+output "client_ids" {
   description = "Map of app client names to IDs"
-  value       = module.cognito.client_ids_map
+  value       = module.cognito.client_ids
 }
 
 output "user_group_names_map" {
