@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.3.7] - 2026-10-27
+
+### Added
+
+- `user_group_names_map` output: map of user group keys to their names (same value previously exposed by `user_group_names_list`)
+
+### Deprecated
+
+- `user_group_names_list` output: despite its name it returns a map, not a list. It is kept unchanged for backward compatibility because existing configurations (including `examples/production`) consume it as a map. Use `user_group_names_map` for the map or the existing `user_group_names` for a list
+
+### Changed
+
+- `examples/production` output `user_group_names_map` now reads `module.cognito.user_group_names_map`
+- Normalize CHANGELOG format: preamble moved to the top, all headings use `## [vX.Y.Z] - YYYY-MM-DD`, entries sorted by version (newest first), link references updated
+- Add missing CHANGELOG entries for v1.3.2 and v1.3.3, reconstructed from git history
+
+### Fixed
+
+- `examples/production/README.md`: outputs list now matches `outputs.tf` (removed non-existent `user_pool_tier` and `user_group_names`, added `user_group_names_map` and `domain`)
+- `examples/basic/README.md`: add missing `domain` output
+- `examples/advanced/README.md`: `resource_server_ids` renamed to the actual output `resource_server_identifiers`; OAuth test snippet used non-existent `domain`/`region` outputs, now uses `oauth_authorize_url`
+- Root README outputs table: document `user_group_names_map` and the deprecated `user_group_names_list`
+
 ## [v1.3.6] - 2026-10-27
 
 ### Fixed
