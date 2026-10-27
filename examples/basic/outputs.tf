@@ -25,7 +25,7 @@ output "domain" {
 
 output "hosted_ui_url" {
   description = "The hosted UI URL"
-  value       = module.cognito.domain != null ? "https://${module.cognito.domain}.auth.${data.aws_region.current.id}.amazoncognito.com" : null
+  value       = module.cognito.domain != null ? "https://${module.cognito.domain}.auth.${data.aws_region.current.region}.amazoncognito.com" : null
 }
 
 data "aws_region" "current" {}

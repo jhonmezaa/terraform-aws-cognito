@@ -31,17 +31,17 @@ output "resource_server_scope_identifiers" {
 
 output "hosted_ui_url" {
   description = "The hosted UI URL"
-  value       = module.cognito.domain != null ? "https://${module.cognito.domain}.auth.${data.aws_region.current.id}.amazoncognito.com" : null
+  value       = module.cognito.domain != null ? "https://${module.cognito.domain}.auth.${data.aws_region.current.region}.amazoncognito.com" : null
 }
 
 output "oauth_authorize_url" {
   description = "OAuth authorization URL"
-  value       = module.cognito.domain != null ? "https://${module.cognito.domain}.auth.${data.aws_region.current.id}.amazoncognito.com/oauth2/authorize" : null
+  value       = module.cognito.domain != null ? "https://${module.cognito.domain}.auth.${data.aws_region.current.region}.amazoncognito.com/oauth2/authorize" : null
 }
 
 output "oauth_token_url" {
   description = "OAuth token URL"
-  value       = module.cognito.domain != null ? "https://${module.cognito.domain}.auth.${data.aws_region.current.id}.amazoncognito.com/oauth2/token" : null
+  value       = module.cognito.domain != null ? "https://${module.cognito.domain}.auth.${data.aws_region.current.region}.amazoncognito.com/oauth2/token" : null
 }
 
 data "aws_region" "current" {}
