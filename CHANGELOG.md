@@ -28,6 +28,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Update README documentation and CHANGELOG formatting
 
+## [v1.3.3] - 2026-02-28
+
+### Changed
+
+- Update README documentation and CHANGELOG formatting
+
+## [v1.3.2] - 2026-02-28
+
+### Added
+
+- `use_region_prefix` variable for consistency with other modules
+
+### Fixed
+
+- `invite_message_template`: provide a default SMS message via `coalesce()` when only the email template is configured, preventing the AWS API validation error (`sMSMessage` must be >= 6 characters)
+- App client token validity: use an explicit null check instead of `lookup()` so the default values (60 min access/ID, 30 day refresh) are always applied, preventing "Invalid range for token validity" errors
+
 ## [v1.3.1] - 2026-02-27
 
 ### Changed
