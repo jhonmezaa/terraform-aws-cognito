@@ -119,8 +119,13 @@ output "user_group_names" {
   value       = [for g in aws_cognito_user_group.this : g.name]
 }
 
+output "user_group_names_map" {
+  description = "Map of user group keys to their names"
+  value       = { for k, v in aws_cognito_user_group.this : k => v.name }
+}
+
 output "user_group_names_list" {
-  description = "Map of user group names to their full name"
+  description = "DEPRECATED: returns a map (not a list) of user group keys to their names; use user_group_names_map for the map or user_group_names for a list. Kept for backward compatibility"
   value       = { for k, v in aws_cognito_user_group.this : k => v.name }
 }
 

@@ -15,7 +15,7 @@ output "client_ids" {
 
 output "user_group_names_map" {
   description = "Map of user group keys to their names"
-  value       = module.cognito.user_group_names_list
+  value       = module.cognito.user_group_names_map
 }
 
 output "domain" {

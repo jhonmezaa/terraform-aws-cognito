@@ -78,9 +78,9 @@ aws cognito-idp admin-add-user-to-group \
 
 - `user_pool_id` - ID of the Cognito User Pool
 - `user_pool_arn` - ARN of the User Pool
-- `user_pool_tier` - Tier of the User Pool (PLUS)
 - `client_ids` - Map of app client IDs
-- `user_group_names` - List of user group names
+- `user_group_names_map` - Map of user group keys to their names
+- `domain` - Domain prefix of the User Pool
 - `hosted_ui_url` - Hosted UI URL
 
 ## What's Configured

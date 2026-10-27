@@ -399,6 +399,8 @@ module "cognito" {
 | resource_server_scope_identifiers     | Map of resource server identifiers to their scope identifiers |
 | identity_provider_names               | List of identity provider names                               |
 | user_group_names                      | List of user group names                                      |
+| user_group_names_map                  | Map of user group keys to their names                         |
+| user_group_names_list                 | DEPRECATED (returns a map); use `user_group_names_map`        |
 | user_group_arns                       | Map of user group names to their ARNs                         |
 | estimated_number_of_users             | Estimated number of users in the pool                         |
 
