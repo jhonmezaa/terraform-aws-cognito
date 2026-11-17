@@ -37,13 +37,16 @@ locals {
     "custom"
   )
 
-  # User pool name with naming convention
-  user_pool_name = "${local.region_prefix}-cognito-${var.account_name}-${var.project_name}"
+  # Name prefix: region prefix with trailing dash, or empty when use_region_prefix = false
+  name_prefix = var.use_region_prefix ? "${local.region_prefix}-" : ""
 
-  # Common tags
+  # User pool name with naming convention (overridable with var.user_pool_name)
+  user_pool_name = coalesce(var.user_pool_name, "${local.name_prefix}cognito-${var.account_name}-${var.project_name}")
+
+  # Common tags: tags_common first, then module tags, then var.tags (kept for backward compatibility)
   common_tags = merge(
+    var.tags_common,
     {
-      ManagedBy   = "Terraform"
       Module      = "terraform-aws-cognito"
       Region      = data.aws_region.current.region
       Account     = var.account_name
@@ -52,6 +55,9 @@ locals {
     },
     var.tags
   )
+
+  # Custom email/SMS sender triggers require a KMS key
+  uses_custom_sender = var.lambda_config_custom_email_sender_lambda_arn != null || var.lambda_config_custom_sms_sender_lambda_arn != null
 
   # Lambda config enabled check
   enable_lambda_config = (

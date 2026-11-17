@@ -22,6 +22,15 @@ resource "aws_cognito_identity_provider" "this" {
   attribute_mapping = lookup(each.value, "attribute_mapping", null)
 
   idp_identifiers = lookup(each.value, "idp_identifiers", null)
+
+  # AWS populates these SAML provider_details keys itself (signing certificate and
+  # redirect binding derived from the metadata), which otherwise shows as drift.
+  lifecycle {
+    ignore_changes = [
+      provider_details["ActiveEncryptionCertificate"],
+      provider_details["SSORedirectBindingURI"],
+    ]
+  }
 }
 
 # Resource Servers
@@ -33,7 +42,7 @@ resource "aws_cognito_resource_server" "this" {
   user_pool_id = aws_cognito_user_pool.this.id
 
   dynamic "scope" {
-    for_each = lookup(each.value, "scopes", [])
+    for_each = each.value.scopes != null ? each.value.scopes : []
     content {
       scope_name        = scope.value.scope_name
       scope_description = scope.value.scope_description
