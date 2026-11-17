@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.4.0] - 2026-11-17
+
+### Added
+
+- `tags_common` variable, merged first into the user pool tags (AGENTS.md tagging convention)
+- `user_pool_name` variable to set an explicit user pool name instead of the generated one
+- `password_history_size` variable (`password_policy.password_history_size`, ESSENTIALS/PLUS tiers)
+- `email_mfa_configuration` variable (`email_mfa_configuration` block)
+- `web_authn_configuration` variable (passkeys: `relying_party_id`, `user_verification`)
+- `advanced_security_additional_flows` variable (`user_pool_add_ons.advanced_security_additional_flows.custom_auth_mode`)
+- `user_group_arns` output (map of user group keys to ARNs) and `name_prefix` output
+- Validation of `account_name` and `project_name` (1-32 characters, `^[a-z0-9-]+$`)
+- Preconditions on the user pool: custom email/SMS sender requires `lambda_config_kms_key_id`; `web_authn_configuration` and a non-zero `password_history_size` require ESSENTIALS or PLUS; `alias_attributes` and `username_attributes` are mutually exclusive
+- `lifecycle.ignore_changes` for the AWS-managed SAML `provider_details` keys `ActiveEncryptionCertificate` and `SSORedirectBindingURI` on identity providers
+
+### Changed
+
+- `use_region_prefix` is now honored: it was declared in v1.3.x but not used, so names always carried the region prefix. The prefix is built as `name_prefix = "${region_prefix}-"` or `""`
+- `ManagedBy = "Terraform"` is now applied after user-supplied tags so it cannot be overridden
+- App clients now depend on identity providers as well as resource servers, so `supported_identity_providers` can reference providers created by the module
+
+### Fixed
+
+- App client defaults documented in the README were never applied: `lookup()` on an object with `optional()` attributes returns `null`, not the fallback. `explicit_auth_flows`, `supported_identity_providers`, `prevent_user_existence_errors`, `enable_token_revocation`, `auth_session_validity`, `generate_secret`, `allowed_oauth_flows_user_pool_client` and `enable_propagate_additional_user_context_data` now get their documented defaults when omitted
+- `resource_servers` entries without `scopes` failed with "Cannot use a null value in for_each"
+- `examples/advanced`: `supported_identity_providers` referenced `Google` while the Google identity provider is commented out, which makes the apply fail; it now uses `["COGNITO"]`
+- Root README: `source` now points to `github.com/jhonmezaa/terraform-aws-cognito//cognito?ref=v1.4.0`; inputs and outputs tables regenerated from the code (they listed variables that do not exist, such as `enable_software_token_mfa`, `ignore_schema_changes`, `account_recovery_mechanisms` and `lambda_*`, and wrong defaults)
+- `examples/advanced/README.md` described a tier, clients, a resource server and an identity provider that are not in `main.tf`
+
+### Upgrade notes
+
+- App clients that omitted the attributes listed under Fixed will show an in-place update on the next plan (no replacement). The most visible changes: `prevent_user_existence_errors` goes from the AWS default `LEGACY` to `ENABLED`, and `explicit_auth_flows` is set to `ALLOW_REFRESH_TOKEN_AUTH` and `ALLOW_USER_SRP_AUTH` (AWS also enables `ALLOW_CUSTOM_AUTH` when the attribute is omitted). To keep the previous behavior, set these attributes explicitly in `app_clients`
+- With `use_region_prefix = true` (the default) generated names do not change. If you set `use_region_prefix = false` on v1.3.x, the name still had the region prefix; on v1.4.0 the prefix is dropped, which renames the user pool and forces its replacement (with `deletion_protection = "ACTIVE"` the apply fails instead). To keep the existing pool, set `user_pool_name` to its current name (for example `user_pool_name = "ause1-cognito-prod-myapp"`)
+- `account_name` and `project_name` values with uppercase letters, underscores or more than 32 characters are now rejected; renaming them would replace the user pool, so pass the old full name through `user_pool_name` if needed
+
 ## [v1.3.7] - 2026-10-27
 
 ### Added
@@ -486,6 +521,15 @@ None reported in this release.
 - [x] terraform.tfvars.example added to all examples
 - [x] README.md added to each example
 
+[v1.4.0]: https://github.com/jhonmezaa/terraform-aws-cognito/releases/tag/v1.4.0
+[v1.3.7]: https://github.com/jhonmezaa/terraform-aws-cognito/releases/tag/v1.3.7
+[v1.3.6]: https://github.com/jhonmezaa/terraform-aws-cognito/releases/tag/v1.3.6
+[v1.3.5]: https://github.com/jhonmezaa/terraform-aws-cognito/releases/tag/v1.3.5
+[v1.3.4]: https://github.com/jhonmezaa/terraform-aws-cognito/releases/tag/v1.3.4
+[v1.3.3]: https://github.com/jhonmezaa/terraform-aws-cognito/releases/tag/v1.3.3
+[v1.3.2]: https://github.com/jhonmezaa/terraform-aws-cognito/releases/tag/v1.3.2
+[v1.3.1]: https://github.com/jhonmezaa/terraform-aws-cognito/releases/tag/v1.3.1
+[v1.3.0]: https://github.com/jhonmezaa/terraform-aws-cognito/releases/tag/v1.3.0
 [v1.2.0]: https://github.com/jhonmezaa/terraform-aws-cognito/releases/tag/v1.2.0
 [v1.1.0]: https://github.com/jhonmezaa/terraform-aws-cognito/releases/tag/v1.1.0
 [v1.0.3]: https://github.com/jhonmezaa/terraform-aws-cognito/releases/tag/v1.0.3
