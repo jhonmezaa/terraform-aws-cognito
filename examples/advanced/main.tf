@@ -41,7 +41,9 @@ module "cognito" {
         "ALLOW_USER_SRP_AUTH",
         "ALLOW_CUSTOM_AUTH"
       ]
-      supported_identity_providers = ["COGNITO", "Google"]
+      # Add "Google" here once the Google identity provider below is enabled;
+      # referencing a provider that does not exist makes the apply fail.
+      supported_identity_providers = ["COGNITO"]
       callback_urls = [
         "https://myapp.example.com/callback",
         "http://localhost:3000/callback"

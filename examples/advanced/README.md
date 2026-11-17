@@ -4,20 +4,20 @@ This example demonstrates advanced OAuth 2.0 configuration with resource servers
 
 ## Features
 
-- ✅ ESSENTIALS tier
+- ✅ PLUS tier with advanced security in AUDIT mode
 - ✅ OAuth 2.0 flows (authorization code & implicit)
 - ✅ Resource servers with custom API scopes
-- ✅ Multiple app clients with different OAuth configurations
-- ✅ Identity provider examples (Google, Facebook - commented)
+- ✅ App client with OAuth 2.0 (authorization code & implicit) and client secret
+- ✅ Identity provider example (Google - commented)
 - ✅ Custom OAuth scopes (api/read, api/write, api/admin)
-- ✅ Hosted UI with custom domain support
+- ✅ Hosted UI with a Cognito-managed domain
 - ✅ Optional MFA
 
 ## Cost Estimate
 
-**~$0.05/month** for ESSENTIALS tier with minimal usage
+Depends on monthly active users: the PLUS tier is billed per MAU (see AWS Cognito pricing)
 
-- User Pool: Included in ESSENTIALS tier
+- User Pool: PLUS tier
 - Domain: Free (Cognito-managed)
 - Custom domain: +$0.50/month (if using custom domain)
 
@@ -73,7 +73,7 @@ aws cognito-idp admin-set-user-password \
   --permanent
 
 # Test OAuth authorization URL (open in browser)
-echo "${AUTHORIZE_URL}?client_id=${CLIENT_ID}&response_type=code&scope=email+openid+profile+api/read&redirect_uri=https://example.com/callback"
+echo "${AUTHORIZE_URL}?client_id=${CLIENT_ID}&response_type=code&scope=email+openid+profile+api/read&redirect_uri=https://myapp.example.com/callback"
 ```
 
 ## Outputs
@@ -91,7 +91,8 @@ echo "${AUTHORIZE_URL}?client_id=${CLIENT_ID}&response_type=code&scope=email+ope
 ## What's Configured
 
 ### User Pool
-- Tier: ESSENTIALS
+- Tier: PLUS
+- Advanced security: AUDIT
 - Username: Email addresses
 - Auto-verify: Email
 - MFA: OPTIONAL
@@ -104,45 +105,30 @@ Custom scopes:
 - `api/write` - Write access to API resources
 - `api/admin` - Full administrative access to API
 
-#### 2. Analytics Resource Server (identifier: `analytics`)
-Custom scopes:
-- `analytics/view` - View analytics data
-- `analytics/export` - Export analytics data
-
 ### App Clients
 
 #### 1. web-app
 - **OAuth flows**: authorization_code, implicit
-- **OAuth scopes**: email, openid, profile, api/read, api/write, api/admin
+- **OAuth scopes**: email, openid, profile, aws.cognito.signin.user.admin, api/read, api/write
+- **Client secret**: generated
+- **Supported identity providers**: COGNITO (add `Google` after enabling the IdP)
 - **Callback URLs**:
-  - `https://example.com/callback`
+  - `https://myapp.example.com/callback`
   - `http://localhost:3000/callback` (for local testing)
 - **Logout URLs**:
-  - `https://example.com/logout`
+  - `https://myapp.example.com/logout`
   - `http://localhost:3000/logout`
-
-#### 2. mobile-app
-- **OAuth flows**: authorization_code
-- **OAuth scopes**: email, openid, profile, api/read
-- **Callback URLs**: `myapp://callback`
-- **Logout URLs**: `myapp://logout`
-
-#### 3. admin-dashboard
-- **OAuth flows**: authorization_code
-- **OAuth scopes**: email, openid, profile, api/read, api/write, api/admin, analytics/view, analytics/export
-- **Callback URLs**: `https://admin.example.com/callback`
 
 ### Identity Providers (Commented Examples)
 
 The example includes commented configuration for:
 - **Google**: Social login with Google
-- **Facebook**: Social login with Facebook
 
 To enable, uncomment and add your client credentials.
 
 ### Domain
 - Type: Cognito-managed domain
-- Format: `{account}-{project}-oauth.auth.{region}.amazoncognito.com`
+- Format: `{account}-{project}-auth.auth.{region}.amazoncognito.com`
 
 ## OAuth 2.0 Authorization Code Flow
 
@@ -153,7 +139,7 @@ GET https://{domain}.auth.{region}.amazoncognito.com/oauth2/authorize
   ?client_id={client_id}
   &response_type=code
   &scope=email+openid+profile+api/read
-  &redirect_uri=https://example.com/callback
+  &redirect_uri=https://myapp.example.com/callback
 ```
 
 ### Step 2: User Authenticates
@@ -164,7 +150,7 @@ User is redirected to hosted UI, enters credentials, and approves scopes.
 
 User is redirected back to your app with authorization code:
 ```
-https://example.com/callback?code=AUTHORIZATION_CODE
+https://myapp.example.com/callback?code=AUTHORIZATION_CODE
 ```
 
 ### Step 4: Exchange Code for Tokens
@@ -176,7 +162,7 @@ curl -X POST https://{domain}.auth.{region}.amazoncognito.com/oauth2/token \
   -d "client_id={client_id}" \
   -d "client_secret={client_secret}" \
   -d "code=AUTHORIZATION_CODE" \
-  -d "redirect_uri=https://example.com/callback"
+  -d "redirect_uri=https://myapp.example.com/callback"
 ```
 
 ### Step 5: Receive Tokens
@@ -244,13 +230,6 @@ Your API can validate the `scope` claim to authorize requests.
    ```hcl
    supported_identity_providers = ["COGNITO", "Google"]
    ```
-
-### Facebook
-
-Similar process:
-1. Create Facebook App at [developers.facebook.com](https://developers.facebook.com)
-2. Add OAuth redirect URI
-3. Uncomment Facebook provider configuration
 
 ## API Gateway Integration
 
