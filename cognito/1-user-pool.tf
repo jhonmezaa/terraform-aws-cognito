@@ -29,6 +29,23 @@ resource "aws_cognito_user_pool" "this" {
     }
   }
 
+  dynamic "email_mfa_configuration" {
+    for_each = var.email_mfa_configuration != null ? [var.email_mfa_configuration] : []
+    content {
+      message = email_mfa_configuration.value.message
+      subject = email_mfa_configuration.value.subject
+    }
+  }
+
+  # WebAuthn (passkeys)
+  dynamic "web_authn_configuration" {
+    for_each = var.web_authn_configuration != null ? [var.web_authn_configuration] : []
+    content {
+      relying_party_id  = web_authn_configuration.value.relying_party_id
+      user_verification = web_authn_configuration.value.user_verification
+    }
+  }
+
   # Password Policy
   password_policy {
     minimum_length                   = var.password_minimum_length
@@ -37,6 +54,7 @@ resource "aws_cognito_user_pool" "this" {
     require_numbers                  = var.password_require_numbers
     require_symbols                  = var.password_require_symbols
     temporary_password_validity_days = var.temporary_password_validity_days
+    password_history_size            = var.password_history_size
   }
 
   # Sign-in Policy
@@ -190,6 +208,13 @@ resource "aws_cognito_user_pool" "this" {
     for_each = var.enable_advanced_security ? [1] : []
     content {
       advanced_security_mode = var.advanced_security_mode
+
+      dynamic "advanced_security_additional_flows" {
+        for_each = var.advanced_security_additional_flows != null ? [1] : []
+        content {
+          custom_auth_mode = var.advanced_security_additional_flows
+        }
+      }
     }
   }
 
@@ -214,7 +239,30 @@ resource "aws_cognito_user_pool" "this" {
     local.common_tags,
     var.user_pool_tags,
     {
-      Name = local.user_pool_name
+      Name      = local.user_pool_name
+      ManagedBy = "Terraform"
     }
   )
+
+  lifecycle {
+    precondition {
+      condition     = !local.uses_custom_sender || var.lambda_config_kms_key_id != null
+      error_message = "lambda_config_kms_key_id es obligatorio cuando se configura custom_email_sender o custom_sms_sender."
+    }
+
+    precondition {
+      condition     = var.web_authn_configuration == null || contains(["ESSENTIALS", "PLUS"], var.user_pool_tier)
+      error_message = "web_authn_configuration requiere user_pool_tier ESSENTIALS o PLUS."
+    }
+
+    precondition {
+      condition     = var.password_history_size == null || coalesce(var.password_history_size, 0) == 0 || contains(["ESSENTIALS", "PLUS"], var.user_pool_tier)
+      error_message = "password_history_size requiere user_pool_tier ESSENTIALS o PLUS."
+    }
+
+    precondition {
+      condition     = !(length(var.username_attributes) > 0 && var.alias_attributes != null && length(coalesce(var.alias_attributes, [])) > 0)
+      error_message = "alias_attributes y username_attributes son mutuamente excluyentes: define solo uno de ellos."
+    }
+  }
 }

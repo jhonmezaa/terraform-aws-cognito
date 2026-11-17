@@ -6,7 +6,7 @@ resource "aws_cognito_user_pool_client" "this" {
   user_pool_id = aws_cognito_user_pool.this.id
 
   # Client Secret
-  generate_secret = lookup(each.value, "generate_secret", false)
+  generate_secret = coalesce(each.value.generate_secret, false)
 
   # Token Validity
   refresh_token_validity = lookup(each.value, "refresh_token_validity", null) != null ? each.value.refresh_token_validity : 30
@@ -24,14 +24,14 @@ resource "aws_cognito_user_pool_client" "this" {
   read_attributes  = lookup(each.value, "read_attributes", null)
   write_attributes = lookup(each.value, "write_attributes", null)
 
-  # Explicit Auth Flows
-  explicit_auth_flows = lookup(each.value, "explicit_auth_flows", [
+  # Explicit Auth Flows (null in the object means "not set", so the documented default is applied)
+  explicit_auth_flows = each.value.explicit_auth_flows != null ? each.value.explicit_auth_flows : [
     "ALLOW_REFRESH_TOKEN_AUTH",
     "ALLOW_USER_SRP_AUTH",
-  ])
+  ]
 
   # Supported Identity Providers
-  supported_identity_providers = lookup(each.value, "supported_identity_providers", ["COGNITO"])
+  supported_identity_providers = each.value.supported_identity_providers != null ? each.value.supported_identity_providers : ["COGNITO"]
 
   # Callback URLs
   callback_urls = lookup(each.value, "callback_urls", null)
@@ -44,7 +44,7 @@ resource "aws_cognito_user_pool_client" "this" {
 
   # Allowed OAuth Flows
   allowed_oauth_flows                  = lookup(each.value, "allowed_oauth_flows", null)
-  allowed_oauth_flows_user_pool_client = lookup(each.value, "allowed_oauth_flows_user_pool_client", false)
+  allowed_oauth_flows_user_pool_client = coalesce(each.value.allowed_oauth_flows_user_pool_client, false)
   allowed_oauth_scopes                 = lookup(each.value, "allowed_oauth_scopes", null)
 
   # Analytics Configuration
@@ -60,17 +60,17 @@ resource "aws_cognito_user_pool_client" "this" {
   }
 
   # Prevent User Existence Errors
-  prevent_user_existence_errors = lookup(each.value, "prevent_user_existence_errors", "ENABLED")
+  prevent_user_existence_errors = coalesce(each.value.prevent_user_existence_errors, "ENABLED")
 
   # Enable Token Revocation
-  enable_token_revocation = lookup(each.value, "enable_token_revocation", true)
+  enable_token_revocation = coalesce(each.value.enable_token_revocation, true)
 
   # Enable Propagate Additional User Context Data
-  enable_propagate_additional_user_context_data = lookup(each.value, "enable_propagate_additional_user_context_data", false)
+  enable_propagate_additional_user_context_data = coalesce(each.value.enable_propagate_additional_user_context_data, false)
 
   # Auth Session Validity
-  auth_session_validity = lookup(each.value, "auth_session_validity", 3)
+  auth_session_validity = coalesce(each.value.auth_session_validity, 3)
 
   # Ensure resource servers are created before app clients (for custom scopes)
-  depends_on = [aws_cognito_resource_server.this]
+  depends_on = [aws_cognito_resource_server.this, aws_cognito_identity_provider.this]
 }

@@ -134,6 +134,16 @@ output "user_group_ids" {
   value       = { for k, v in aws_cognito_user_group.this : k => v.id }
 }
 
+output "user_group_arns" {
+  description = "Map of user group keys to their ARNs (arn:aws:cognito-idp:<region>:<account>:userpool/<pool-id>/group/<name>)"
+  value       = { for k, v in aws_cognito_user_group.this : k => "${aws_cognito_user_pool.this.arn}/group/${v.name}" }
+}
+
+output "name_prefix" {
+  description = "Name prefix used for generated resource names (empty when use_region_prefix = false)"
+  value       = local.name_prefix
+}
+
 output "user_groups_map" {
   description = "Complete map of user groups with all attributes"
   value = {

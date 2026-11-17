@@ -5,11 +5,21 @@
 variable "account_name" {
   description = "Account name for resource naming (e.g., 'prod', 'dev', 'staging')"
   type        = string
+
+  validation {
+    condition     = length(var.account_name) >= 1 && length(var.account_name) <= 32 && can(regex("^[a-z0-9-]+$", var.account_name))
+    error_message = "account_name debe tener entre 1 y 32 caracteres y solo puede contener letras minúsculas, números y guiones."
+  }
 }
 
 variable "project_name" {
   description = "Project name for resource naming (e.g., 'myapp', 'api')"
   type        = string
+
+  validation {
+    condition     = length(var.project_name) >= 1 && length(var.project_name) <= 32 && can(regex("^[a-z0-9-]+$", var.project_name))
+    error_message = "project_name debe tener entre 1 y 32 caracteres y solo puede contener letras minúsculas, números y guiones."
+  }
 }
 
 # ==============================================================================
@@ -32,6 +42,23 @@ variable "environment" {
   description = "Environment name (e.g., 'production', 'development', 'staging')"
   type        = string
   default     = "production"
+}
+
+variable "user_pool_name" {
+  description = "Explicit user pool name. When null, the name is generated as {region_prefix}-cognito-{account_name}-{project_name}"
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.user_pool_name == null || (length(coalesce(var.user_pool_name, "x")) >= 1 && length(coalesce(var.user_pool_name, "x")) <= 128)
+    error_message = "user_pool_name debe tener entre 1 y 128 caracteres."
+  }
+}
+
+variable "tags_common" {
+  description = "Common tags applied to every taggable resource (merged first, so module and specific tags take precedence)"
+  type        = map(string)
+  default     = {}
 }
 
 variable "tags" {
@@ -125,6 +152,33 @@ variable "mfa_configuration" {
   }
 }
 
+variable "email_mfa_configuration" {
+  description = "Email MFA message configuration (requires ESSENTIALS or PLUS tier and DEVELOPER email sending). message must contain {####}"
+  type = object({
+    message = optional(string)
+    subject = optional(string)
+  })
+  default = null
+}
+
+# ==============================================================================
+# WEBAUTHN (PASSKEYS)
+# ==============================================================================
+
+variable "web_authn_configuration" {
+  description = "WebAuthn (passkeys) configuration. Requires ESSENTIALS or PLUS tier. user_verification: required or preferred"
+  type = object({
+    relying_party_id  = optional(string)
+    user_verification = optional(string)
+  })
+  default = null
+
+  validation {
+    condition     = var.web_authn_configuration == null || try(var.web_authn_configuration.user_verification, null) == null || contains(["required", "preferred"], try(var.web_authn_configuration.user_verification, ""))
+    error_message = "web_authn_configuration.user_verification debe ser required o preferred."
+  }
+}
+
 # ==============================================================================
 # PASSWORD POLICY
 # ==============================================================================
@@ -162,6 +216,17 @@ variable "password_require_symbols" {
   description = "Whether to require symbols in passwords"
   type        = bool
   default     = true
+}
+
+variable "password_history_size" {
+  description = "Number of previous passwords users are prevented from reusing (0-24). Requires ESSENTIALS or PLUS tier. Null leaves the AWS default"
+  type        = number
+  default     = null
+
+  validation {
+    condition     = var.password_history_size == null || (coalesce(var.password_history_size, 0) >= 0 && coalesce(var.password_history_size, 0) <= 24)
+    error_message = "password_history_size debe estar entre 0 y 24."
+  }
 }
 
 variable "temporary_password_validity_days" {
@@ -485,6 +550,17 @@ variable "advanced_security_mode" {
   validation {
     condition     = contains(["OFF", "AUDIT", "ENFORCED"], var.advanced_security_mode)
     error_message = "Advanced security mode must be OFF, AUDIT, or ENFORCED"
+  }
+}
+
+variable "advanced_security_additional_flows" {
+  description = "Threat protection mode for custom authentication flows (custom_auth_mode): AUDIT or ENFORCED. Only applied when enable_advanced_security = true"
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.advanced_security_additional_flows == null || contains(["AUDIT", "ENFORCED"], coalesce(var.advanced_security_additional_flows, "AUDIT"))
+    error_message = "advanced_security_additional_flows debe ser AUDIT o ENFORCED."
   }
 }
 
